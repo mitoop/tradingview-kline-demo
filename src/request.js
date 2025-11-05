@@ -45,7 +45,7 @@ export default class Request {
         .then(res => res.json())
         .then(res => {
           const { code, data } = res
-          if (code === 200) resolve(data)
+          if (code === 0) resolve(data)
           else reject('查询失败')
         })
     });
@@ -57,7 +57,7 @@ export default class Request {
         .then(res => res.json())
         .then(res => {
           const { code, data } = res
-          if (code === 200) resolve(data)
+          if (code === 0) resolve(data)
           else reject('查询失败')
         })
     });
