@@ -36,7 +36,60 @@ class SingletonSocket {
     return SingletonSocket.instance;
   }
   // 连接
-  connect (type, symbol, region, resolution, lastBar) {
+  connect(type, symbol, region, resolution, lastBar) {
+    this.resolution = resolution;
+    this.region = region;
+    this.lastBar = lastBar;
+    this.dataMap.clear();
+    this.symbol = symbol;
+    this.type = type;
+
+    // 停掉之前的定时器
+    if (this.simTimer) clearInterval(this.simTimer);
+
+    // 模拟初始价格
+    let lastPrice = 102000;
+
+    this.simTimer = setInterval(() => {
+      const now = Date.now();
+
+      // 模拟价格波动 ±0.01%
+      const delta = lastPrice * (Math.random() * 0.0002 - 0.0001);
+      const newPrice = parseFloat((lastPrice + delta).toFixed(2));
+
+      // 高低价微幅波动 ±0.005%
+      const h = Math.max(newPrice, lastPrice) * (1 + (Math.random() * 0.0001));
+      const l = Math.min(newPrice, lastPrice) * (1 - (Math.random() * 0.0001));
+
+      // 成交量随机在 0.01~0.05 之间，和价格波动比例协调
+      const volume = parseFloat((0.01 + Math.random() * 0.04).toFixed(4));
+
+      const fakeData = {
+        code: 1,
+        data: {
+          s: "BTCUSDT",
+          ld: newPrice,
+          o: lastPrice,
+          h: parseFloat(h.toFixed(2)),
+          l: parseFloat(l.toFixed(2)),
+          t: now,
+          v: volume,
+          tu: parseFloat((Math.random() * 1e5).toFixed(2)),
+          ts: 0,
+          type: "quote",
+          r: "BA",
+          ch: parseFloat((newPrice - lastPrice).toFixed(2)),
+          chp: parseFloat(((newPrice - lastPrice) / lastPrice * 100).toFixed(4)),
+        }
+      };
+
+      lastPrice = newPrice;
+      this.handleMessage(fakeData);
+    }, 300); // 每 300ms 更新一次
+
+    console.log("开始模拟行情数据");
+  }
+  connect1 (type, symbol, region, resolution, lastBar) {
     this.resolution = resolution
     this.region = region
     this.lastBar = lastBar
