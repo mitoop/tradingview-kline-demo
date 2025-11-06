@@ -36,7 +36,7 @@ class SingletonSocket {
     return SingletonSocket.instance;
   }
   // 连接
-  connect(type, symbol, region, resolution, lastBar) {
+  connect1(type, symbol, region, resolution, lastBar) {
     this.resolution = resolution;
     this.region = region;
     this.lastBar = lastBar;
@@ -89,7 +89,7 @@ class SingletonSocket {
 
     console.log("开始模拟行情数据");
   }
-  connect1 (type, symbol, region, resolution, lastBar) {
+  connect (type, symbol, region, resolution, lastBar) {
     this.resolution = resolution
     this.region = region
     this.lastBar = lastBar
@@ -104,7 +104,7 @@ class SingletonSocket {
     if (this.symbol === symbol && this.socket && this.socket.readyState === WebSocket.OPEN) return
     // 关闭之前的连接
     if (this.socket && this.socket.readyState === WebSocket.OPEN) this.close()
-    this.socket = new WebSocket(`${BASE_URL}/${TYPE_MAP[type]}`)
+    this.socket = new WebSocket(`${BASE_URL}/${TYPE_MAP[type]}?token=${this.token}`)
     this.symbol = symbol
     this.type = type
     this.reconnectTimes = 0
