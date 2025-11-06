@@ -36,7 +36,7 @@ class SingletonSocket {
     return SingletonSocket.instance;
   }
   // 连接
-  connect1(type, symbol, region, resolution, lastBar) {
+  connect(type, symbol, region, resolution, lastBar) {
     this.resolution = resolution;
     this.region = region;
     this.lastBar = lastBar;
@@ -89,7 +89,7 @@ class SingletonSocket {
 
     console.log("开始模拟行情数据");
   }
-  connect (type, symbol, region, resolution, lastBar) {
+  connect2 (type, symbol, region, resolution, lastBar) {
     this.resolution = resolution
     this.region = region
     this.lastBar = lastBar
